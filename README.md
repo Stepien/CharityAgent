@@ -8,12 +8,14 @@ TODO:
 - adding more sites;
 - adding more complicated sites;
 - adding tests for sites;
+<br>
 
 >If you want erase your site from list please contact me.
 >I don't want harm any of this sites. This bot is just to automate boring stuff and improve traffic on this websites. 
 
-
+<br>
 <hr ***/>
+<br>
 
 
 ## Licence

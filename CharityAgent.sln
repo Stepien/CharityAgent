@@ -5,7 +5,12 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CharityAgent", "CharityAgent\CharityAgent.csproj", "{F12B6DCE-1B7C-4AD9-9D8C-7EE79D19C0D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharityAgent.Tests", "CharityAgent.xUnitTests\CharityAgent.Tests.csproj", "{2DB4BFCD-979C-44E1-8C5B-6F64FD5BF9F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CharityAgent.Tests", "CharityAgent.xUnitTests\CharityAgent.Tests.csproj", "{2DB4BFCD-979C-44E1-8C5B-6F64FD5BF9F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{666700BE-1D71-450B-B8A4-7CBA1CABE2A7}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
