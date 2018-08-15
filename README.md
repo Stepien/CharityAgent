@@ -1,8 +1,8 @@
-# CharityAgent
+﻿# CharityAgent
 
 Simple console program that run browsers to clicks on "Charity Buttons". 
 Using .Net Core 2.1, Selenium, Producer/Consumer pattern, Parallel Pipeline with TPL DataFlow, xUnit
-and progressBar - https://gist.github.com/DanielSWolf/0ab6a96899cc5377bf54
+<br>and progressBar - https://gist.github.com/DanielSWolf/0ab6a96899cc5377bf54
 
 TODO:
 - adding more sites;
@@ -10,9 +10,11 @@ TODO:
 - adding tests for sites;
 <br>
 
->If you want erase your site from list please contact me.
->I don't want harm any of this sites. This bot is just to automate boring stuff and improve traffic on this websites. 
-
+>If you want erase your site from list please contact me.<br>
+>I don't want harm any of this sites. This bot
+> is just to automate boring stuff and improve traffic on this websites.<br>
+>It was created to help people in need. 😊
+>
 <br>
 <hr ***/>
 <br>
