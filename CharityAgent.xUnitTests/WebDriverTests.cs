@@ -1,22 +1,34 @@
 using OpenQA.Selenium.Chrome;
+using System;
 using Xunit;
 
-namespace CharityAgent.xUnitTests
+namespace CharityAgent.Tests
 {
-	public class WebDriverTests
+	public class WebDriverTests : IDisposable
 	{
+		ChromeDriver driver;
+
+		public WebDriverTests()
+		{
+			driver = new ChromeDriver();
+		}
+
+		public void Dispose()
+		{
+			driver.Dispose();
+		}
+
 
 		[Fact]
 		[Trait("Category", "SkipWhenLiveUnitTesting")]
 		public void Driver_CheckIfDriverWorkingAndRunningGoogle_ShouldReturnGoogle()
 		{
 			//Arrange
-			var driver = new ChromeDriver();
-			driver.Manage().Window.Maximize();
-			//Act
 			driver.Navigate().GoToUrl("https://www.google.com/");
+			//Act
+			var result = driver.Title;
 			//Assert
-			Assert.Equal("Google", driver.Title);
+			Assert.Equal("Google", result);
 			driver.Dispose();
 		}
 

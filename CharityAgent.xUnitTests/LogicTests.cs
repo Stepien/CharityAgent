@@ -18,7 +18,7 @@ namespace CharityAgent.Tests
 		}
 
 		[Fact]
-		public void IncrementProgress_TryingUnderIncrement_ShouldReturn20()
+		public void IncrementProgress_UnderIncrement_ShouldReturn20()
 		{
 			var processingSite = 10;
 			var progress = new Progress(20, 100);

@@ -21,7 +21,4 @@
 		public string ButtonToClick { get; set; }
 		public SelectMethodEnum SelectMethod { get; set; }
 	}
-
 }
-
-

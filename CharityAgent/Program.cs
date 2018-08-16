@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,30 +11,17 @@ using static System.Console;
 
 namespace CharityAgent
 {
-	/// <summary>
-	/// Simple console program that run browsers to clicks on "Charity Buttons". 
-	/// Using .Net Core 2.1, Selenium, Producer/Consumer pattern, Parallel Pipeline with TPL DataFlow, xUnit
-	/// and progressBar - https://gist.github.com/DanielSWolf/0ab6a96899cc5377bf54
-	/// </summary>
-	/// 
-	/// TODO:
-	///		- adding more sites;
-	///		- adding more complicated sites;
-	///		- adding tests for sites;
-	/// 
 	public class Program
 	{
 		public static void Main(string[] args)
 		{
 
 			WriteLine("-- Charity Agent --");
-			WriteLine("how many browser you wanna run? (prefer 1-7)");
+			WriteLine("How many browser you wanna run? (prefer 1-7)");
 			int maxWebDrivers = GetIntFromConsole();
 			WriteLine("CharityAgent Start at: " + DateTime.Now.ToShortTimeString() + " using " + maxWebDrivers + " browsers.");
 			WriteLine("Click key \"c\" on keyboard to cancel operations.");
 			WriteLine();
-
-			var sites = GetSitesToProcess(TypeOfSiteEnum.SimpleGoAndClickButton);
 
 			using (ProgressBar progressBar = new ProgressBar())
 			{
@@ -52,7 +40,8 @@ namespace CharityAgent
 		async static Task ProcessAsynchonously(int maxWebdrivers, ProgressBar progressBar)
 		{
 			var cts = new CancellationTokenSource();
-			var sites = GetSitesToProcess(TypeOfSiteEnum.SimpleGoAndClickButton);
+			var sites = GetSitesToProcess(TypeOfSiteEnum.SimpleGoAndClickButton).SelectMany(x => x.Select(z => (Site)z)).ToArray();
+
 			Progress progress = new Progress(0, sites.Count());
 
 			Task.Run(() =>
@@ -82,6 +71,7 @@ namespace CharityAgent
 				site =>
 				{
 					int currentIndex = Array.IndexOf(sites, site);
+					//.FindIndex(a => a.Equals(site));
 					WriteLine("Site " + (double)currentIndex + "/" + sites.Count());
 					WriteLine("{0} - Done", site.Name);
 				}
@@ -93,11 +83,12 @@ namespace CharityAgent
 
 			try
 			{
-				Parallel.For(0, sites.Count(), new ParallelOptions { MaxDegreeOfParallelism = 4, CancellationToken = cts.Token }
+				Parallel.For(0, sites.Count(), new ParallelOptions { MaxDegreeOfParallelism = maxWebdrivers, CancellationToken = cts.Token }
 				, index =>
 				{
 					inputList.SendAsync(sites[index]).GetAwaiter().GetResult();
 				});
+
 				inputList.Complete();
 				await outputBlock.Completion;
 
@@ -169,7 +160,7 @@ namespace CharityAgent
 		}
 
 		/// <summary>
-		/// Simple creating webdrover, go to site and click button
+		/// Main method creating webdriver, go to site and click button
 		/// </summary>
 		/// <param name="site"></param>
 		/// <returns></returns>
@@ -258,78 +249,15 @@ namespace CharityAgent
 		/// </summary>
 		/// <param name="typeOfSite"></param>
 		/// <returns></returns>
-		public static Site[] GetSitesToProcess(TypeOfSiteEnum typeOfSite)
+		public static IEnumerable<object[]> GetSitesToProcess(TypeOfSiteEnum typeOfSite)
 		{
-			// Sites type go to url and click button
-
-			#region NationaSites
-
-			#region GreeterGood
-			Site theRainForestSite = new Site("therainforestsite.greatergood.com", "http://therainforestsite.greatergood.com", "button-main", SelectMethodEnum.ByClassName);
-			Site theHungerSite = new Site("thehungersite.greatergood.com", "http://thehungersite.greatergood.com/clickToGive/ths/home", "button-main", SelectMethodEnum.ByClassName);
-			Site theLiteracySite = new Site("theliteracysite.greatergood.com", "http://theliteracysite.greatergood.com/clickToGive/lit/home", "button-main", SelectMethodEnum.ByClassName);
-			Site theAnimalRescueSite = new Site("theanimalrescuesite.greatergood.com", "http://theanimalrescuesite.greatergood.com/clickToGive/ars/home", "button-main", SelectMethodEnum.ByClassName);
-			#endregion
-
-			Site eInclusionSite = new Site("e-inclusionsite.mondodigitale.org/", "http://e-inclusionsite.mondodigitale.org/", "/html/body/div/div[2]/div[1]/div[1]", SelectMethodEnum.ByXpath);
-			Site bhookh = new Site("bhookh", "http://www.bhookh.com/", "/html/body/div[1]/table/tbody/tr/td/table/tbody/tr[3]/td/div/img", SelectMethodEnum.ByXpath);
-			Site craigResarchLabs = new Site("creigResarchLabs", "http://www.craigresearchlabs.com/cancer.html", "/html/body/h1/center/table/tbody/tr[2]/td[2]/center[1]/a/img", SelectMethodEnum.ByXpath);
-
-			#region http://www.care2.com/
-			Site care2violenceAgainstWomen = new Site("care2.com/click-to-donate/violence-against-women/", "http://www.care2.com/click-to-donate/violence-against-women/", "c2dm-click-clickToBtn", SelectMethodEnum.ById);
-			Site care2violenceChildren = new Site("care2.com/click-to-donate/children/", "http://www.care2.com/click-to-donate/children/", "c2dm-click-clickToBtn", SelectMethodEnum.ById);
-			Site care2violenceRainforest = new Site("care2.com/click-to-donate/rainforest/", "http://www.care2.com/click-to-donate/rainforest/", "c2dm-click-clickToBtn", SelectMethodEnum.ById);
-			Site care2violenceBigCats = new Site("care2.com/click-to-donate/big-cats/", "http://www.care2.com/click-to-donate/big-cats/", "c2dm-click-clickToBtn", SelectMethodEnum.ById);
-			Site care2violenceSeals = new Site("care2.com/click-to-donate/seals/", "http://www.care2.com/click-to-donate/seals/", "c2dm-click-clickToBtn", SelectMethodEnum.ById);
-			Site care2violenceOceans = new Site("care2.com/click-to-donate/oceans/", "http://www.care2.com/click-to-donate/oceans/", "c2dm-click-clickToBtn", SelectMethodEnum.ById);
-			Site care2violenceAnimalRescue = new Site("care2.com/click-to-donate/animal-rescue/", "http://www.care2.com/click-to-donate/animal-rescue/", "c2dm-click-clickToBtn", SelectMethodEnum.ById);
-			Site care2violenceWolves = new Site("care2.com/click-to-donate/wolves/", "http://www.care2.com/click-to-donate/wolves/", "c2dm-click-clickToBtn", SelectMethodEnum.ById);
-			#endregion
-
-			#endregion
-			#region PolishSites
-			Site pajacyk = new Site("pajacyk", "https://www.pajacyk.pl/#index", "paj-click", SelectMethodEnum.ByClassName);
-			//Site polskieSerce = new Site("polskieserce.pl", "http://polskieserce.pl/", "buttonPomoc", SelectMethod.ByClassName);
-			Site okruszek = new Site("okruszek.org.pl", "http://www.okruszek.org.pl/", "click-crumb", SelectMethodEnum.ByClassName);
-			#endregion
-
-
-			Site[] simpleSitesGoToUrlAndClick = new Site[]
-			{
-				theRainForestSite,
-				theHungerSite,
-				bhookh,
-				craigResarchLabs,
-
-				care2violenceAgainstWomen,
-				care2violenceChildren,
-				care2violenceRainforest,
-				care2violenceBigCats,
-				care2violenceSeals,
-				care2violenceOceans,
-				care2violenceAnimalRescue,
-				care2violenceWolves,
-
-				pajacyk,
-				okruszek,
-			};
-
-			//Sites type go to url hover on button then click
-
-			Site pmiska = new Site("Pmiska.pl", "http://www.pmiska.pl/", "#content > div.toppies > a > img.b", SelectMethodEnum.ByCssSelector);
-
-			Site[] sitesGoToUrlHoverAndClick = new Site[]
-			{
-				pmiska
-			};
-
 			switch (typeOfSite)
 			{
 				case TypeOfSiteEnum.SimpleGoAndClickButton:
-					return simpleSitesGoToUrlAndClick;
+					return Sites.SimpleNavigateClickButtonWebsite();
 
 				case TypeOfSiteEnum.GoHoverClickButton:
-					return sitesGoToUrlHoverAndClick;
+					return Sites.SitesNavigateHoverClickButtonWebsite();
 
 				default:
 					return null;
