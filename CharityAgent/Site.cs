@@ -2,6 +2,11 @@
 {
 	public class Site
 	{
+		public string Name { get; set; }
+		public string Url { get; set; }
+		public string ButtonToClick { get; set; }
+		public SelectMethodEnum SelectMethod { get; set; }
+
 		public Site()
 		{
 
@@ -15,10 +20,5 @@
 			SelectMethod = selectMethod;
 
 		}
-
-		public string Name { get; set; }
-		public string Url { get; set; }
-		public string ButtonToClick { get; set; }
-		public SelectMethodEnum SelectMethod { get; set; }
 	}
 }
